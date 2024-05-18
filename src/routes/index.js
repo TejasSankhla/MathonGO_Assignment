@@ -4,6 +4,8 @@ const upload = multer({ dest: "uploads/" });
 import * as userController from "../controller/userController.js";
 import * as listController from "../controller/list-controller.js";
 import * as emailComtroller from "../controller/emailController.js";
+import * as unsubscribeController from "../controller/unsubscribeController.js";
+
 
 const router = Express.Router();
 
@@ -16,5 +18,6 @@ router.post("/add-users", upload.single("file"), userController.addUsers);
 
 //Email sending routes
 router.post("/send/:listId", emailComtroller.sendEmailToList);
+router.get("/send/unsubscribe", unsubscribeController.unsubscribeUser);
 
 export default router;
