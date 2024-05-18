@@ -17,7 +17,7 @@ cd project
 npm install
 ```
 
-3. Setup .env file 
+3. Setup .env file
 
 ```
 PORT=3002
@@ -45,6 +45,18 @@ router.post("/add-users", upload.single("file"), userController.addUsers);// Add
 router.post("/send/:listId", emailComtroller.sendEmailToList);
 router.get("/send/unsubscribe", unsubscribeController.unsubscribeUser);
 ```
+
+### Additional
+
+If you are using personal mail to setup SMTP nodemailer service than google has restricted the access to third-party apps in its latest security updates. Here's how you can fix it->
+
+- Enable 2-factor authentication to your google account
+- Search for less secure web apps
+- From Select App options select Other and write your app name it could be any name like mycustomapp
+- It will generate you the password copy the password from the popup and use the following code.
+- Use that copied password in the auth password section of the code
+
+or refer to (https://stackoverflow.com/a/75135936/17865998)
 
 ## **Features:**
 
