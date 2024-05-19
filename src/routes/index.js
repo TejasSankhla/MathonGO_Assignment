@@ -18,6 +18,6 @@ router.post("/add-users", upload.single("file"), userController.addUsers);
 
 //Email sending routes
 router.post("/send/:listId", emailComtroller.sendEmailToList);
-router.get("/send/unsubscribe", unsubscribeController.unsubscribeUser);
+router.post("/unsubscribe", unsubscribeController.unsubscribeUser);
 
 export default router;
