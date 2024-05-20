@@ -33,19 +33,172 @@ npm start
 
 ### Routes
 
+
+
+**Base URL**:  
+`https://mathongo-assignment-2.onrender.com/`  
+_Deployed on Render_
+
+## Endpoints
+
+### 1. Create a List
+**Endpoint**: `POST /lists`  
+**Description**: Creates a list with a title and custom properties.
+
+**Request Body**:
+```json
+{
+    "title": "string", // Title of the list
+    "customProperties": [
+        {
+            "title": "string", // Title of the custom property
+            "defaultValue": "string" // Fallback value of the custom property
+        }
+    ]
+}
 ```
 
-//list routes
-router.post("/lists", listController.createList);// create a list
-
-//add User to list
-router.post("/add-users", upload.single("file"), userController.addUsers);// Add users to the list through csv file
-
-//Email sending routes
-router.post("/send/:listId", emailComtroller.sendEmailToList);
-router.get("/send/unsubscribe", unsubscribeController.unsubscribeUser);
+**Response**:
+```json
+{
+    "success": true,
+    "message": "List created successfully",
+    "list": {
+        "id": "string",
+        "title": "string",
+        "customProperties": [
+            {
+                "title": "string",
+                "defaultValue": "string"
+            }
+        ]
+    }
+}
 ```
 
+### 2. Add Users to List via CSV
+**Endpoint**: `POST /add-users`  
+**Description**: Adds users to the list through a CSV file upload.
+
+**Headers**:
+```
+Content-Type: multipart/form-data
+```
+
+**Form Data**:
+- `file`: (file) The CSV file containing users.
+
+**Example CSV Format**:
+```
+name,email,city
+John Doe,john.doe@email.com,Bengaluru
+Jane Doe,jane.doe@email.com,
+```
+
+**Response**:
+```json
+{
+    "success": true,
+    "message": "Users processed",
+    "successfulCount": 1,
+    "failedCount": 1,
+    "totalCount": 2,
+    "errors": [
+        {
+            "row": 2,
+            "message": "Email is required"
+        }
+    ]
+}
+```
+
+### 3. Send Email to List
+**Endpoint**: `POST /send/:listId`  
+**Description**: Sends an email to all users in the specified list.
+
+**URL Parameters**:
+- `listId`: (string) ID of the list to send emails to.
+
+**Request Body**:
+```json
+{
+    "subject": "string", // Subject of the email
+    "body": "string" // Body of the email with placeholders
+}
+```
+
+**Example Request Body**:
+```json
+{
+    "subject": "Welcome!",
+    "body": "Hey [name]!\n\nThank you for signing up with your email [email]. We have received your city as [city]."
+}
+```
+
+**Response**:
+```json
+{
+    "success": true,
+    "message": "Emails sent successfully"
+}
+```
+
+### 4. Unsubscribe User
+**Endpoint**: `GET /send/unsubscribe`  
+**Description**: Unsubscribes a user from the list.
+
+**Query Parameters**:
+- `email`: (string) The email of the user to unsubscribe.
+
+**Response**:
+```json
+{
+    "success": true,
+    "message": "User unsubscribed successfully"
+}
+```
+
+## Environment Variables
+In your `.env` file, set the following variables:
+```
+PORT=3002
+Admin_Email=your_mail@example.com
+Admin_Email_Pass=your_password
+```
+
+## Setting Up and Running the Server
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/TejasSankhla/MathonGO_Assignment
+   ```
+2. Navigate to the project directory:
+   ```sh
+   cd project
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+4. Set up your `.env` file with the necessary configurations.
+5. Start the server:
+   ```sh
+   npm start
+   ```
+
+## Error Handling
+If some users are not added due to errors, the API will return a CSV with the list of errors, including the count of users successfully added, count of users not added, and the current total count in the list.
+
+## SMTP Configuration for Nodemailer
+To configure SMTP with Gmail:
+1. Enable 2-factor authentication on your Google account.
+2. Generate an App Password for your application.
+3. Use this App Password in the `Admin_Email_Pass` field in your `.env` file.
+
+For detailed steps, refer to this [Stack Overflow answer](https://stackoverflow.com/questions/45478293/username-and-password-not-accepted-when-using-nodemailer).
+
+---
+
+By following this documentation, you should be able to efficiently test and use the User List Management and Email Sending API.
 ### Additional
 
 If you are using personal mail to setup SMTP nodemailer service than google has restricted the access to third-party apps in its latest security updates. Here's how you can fix it->
