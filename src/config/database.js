@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
+const url = process.env.url;
 const connect = async () => {
-  await mongoose.connect("mongodb://0.0.0.0:27017/mathonGO");
-  console.log("mongo server connected");
+  try {
+    await mongoose.connect(url);
+
+    console.log("mongo server connected");
+  } catch (error) {
+    console.log("not able to connect mongo", error);
+  }
 };
 export default connect;

@@ -1,11 +1,11 @@
 import express from "express";
 import { PORT } from "./config/server-config.js";
-import connect from "./config/database.js";
+import run from "./config/database.js";
 import bodyParser from "body-parser";
 import apiroutes from "./routes/index.js";
 const PrepareAndStartServer = async () => {
   const app = express();
-  await connect();
+  await run();
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
